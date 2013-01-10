@@ -1,0 +1,9 @@
+    使用前，将与Image同目录下的srcImage中想要识别的图片改名为source，然后点击ImageHandler运行。
+    程序运行成功后，会有相应的询问：“是吧？”，正确的话，回答“Y”，就会给出相应的反应，如果不正确，请输入相应的花色：
+    Brick:方砖
+    BlackPitch:黑桃
+    RedPitch:红桃
+    Plum:梅花
+然后再次点击运行，看看程序的回答。
+    工程里面有四个txt文件，Brick,BlackPitch,RedPitch,Plum,分别存储的是回答错误时的图片指纹。第一个指纹是默认的标准图片的指纹。
+    本程序目前只能识别A的花色。
