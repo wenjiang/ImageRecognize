@@ -14,7 +14,7 @@ public class ImageCuter {
 			int srcLeftTopY, int srcRightButtomX, int srcRightButtomY,
 			String name) throws IOException {
 		InputStream inputStream = null;
-		String path =  "D:\\workspace\\Image\\bin\\srcImage\\" + name + ".jpg";
+		String path =  "srcImage\\" + name + ".jpg";
 		inputStream = new FileInputStream(path);
 		// 用ImageIO读取字节流
 		BufferedImage bufferedImage = ImageIO.read(inputStream);
@@ -30,7 +30,7 @@ public class ImageCuter {
 	}
 
 	public void createSrcImage() throws IOException {
-		File file = new File("D:\\workspace\\Image\\bin\\srcImage\\source.jpg");
+		File file = new File("srcImage\\source.jpg");
 		BufferedImage image = ImageIO.read(file);// 通过imageio将图像载入
 		ImageIO.write(image, "jpg", file);
 	}

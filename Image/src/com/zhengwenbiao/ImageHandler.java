@@ -2,6 +2,7 @@ package com.zhengwenbiao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -14,6 +15,9 @@ public class ImageHandler {
 
 	public static void main(String[] args) throws IOException,
 			InterruptedException {
+		File file = new File("test");
+		System.out.println(file.getAbsolutePath());
+		System.out.println(file.getCanonicalPath());
 		ImageCuter cuter = new ImageCuter();
 		cuter.cutImage(440, 755, 0, 0, 440, 755, "source");
 		cuter.createSrcImage();
@@ -72,36 +76,34 @@ public class ImageHandler {
 	// 控制台上显示回答
 	private static void showAnswer(String color, String sourceHashCode)
 			throws IOException {
-		BufferedWriter bufferWriterBrick = getBufferedWriter("Brick");
-		BufferedWriter bufferWriterBlackPitch = getBufferedWriter("BlackPitch");
-		BufferedWriter bufferWriterRedPitch = getBufferedWriter("RedPitch");
-		BufferedWriter bufferWriterPlum = getBufferedWriter("Plum");
-		System.out.println("这是一张" + color + "A");
-		System.out.println("是吧？");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				(System.in)));
-		String answer = reader.readLine();
-		if (answer.equals("Y")) {
-			System.out.println("太好了!我果然是最聪明的!");
-		} else {
-			System.out.println("Oh,shit!下次不会错了!!");
-			if (answer.equals("Brick")) {
-				writeToColorTxt(bufferWriterBrick, sourceHashCode);
-			} else if (answer.equals("BlackPitch")) {
-				writeToColorTxt(bufferWriterBlackPitch, sourceHashCode);
-			} else if (answer.equals("RedPitch")) {
-				writeToColorTxt(bufferWriterRedPitch, sourceHashCode);
-			} else if (answer.equals("Plum")) {
-				writeToColorTxt(bufferWriterPlum, sourceHashCode);
+		System.out.println("这是一张" + color + "A");
+		System.out.println("是吧？");
+		while(true) {
+			String answer = reader.readLine();
+			if (answer.equals("Y") || answer.equals("yes") || answer.equals("Yes")) {
+				System.out.println("太好了!我果然是最聪明的!");
+				break;
+			} else if(answer.equals("Brick") || answer.equals("BlackPeach") || answer.equals("RedPeach") ||
+					answer.equals("Plum")) {
+				BufferedWriter writer = getBufferedWriter(answer);
+				writeToColorTxt(writer, sourceHashCode);
+				writer.close();
+				System.out.println("下次不会再错了!");
+				break;
+			} else {
+				System.out.println("你说啥来着?");
+				continue;
 			}
 		}
+		reader.close();
 	}
-
+	
 	// 得到相应txt的BufferedWriter
 	private static BufferedWriter getBufferedWriter(String color)
 			throws IOException {
-		FileWriter writer = new FileWriter("D:\\workspace\\Image\\" + color
-				+ ".txt", true);
+		FileWriter writer = new FileWriter(color + ".txt", true);
 		return new BufferedWriter(writer);
 	}
 
@@ -127,19 +129,19 @@ public class ImageHandler {
 	// 给出可能的答案，因为汉明距离是在2-7内，认为两张图片是相似的
 	private static void getMaybeAnswer(String color, String sourceHashCode)
 			throws IOException, InterruptedException {
-		boolean isRedPitch = judgeFromList(sourceHashCode, "RedPitch");
+		boolean isRedPeach = judgeFromList(sourceHashCode, "RedPeach");
 		boolean isBrick = judgeFromList(sourceHashCode, "Brick");
-		boolean isBlackPitch = judgeFromList(sourceHashCode, "BlackPitch");
+		boolean isBlackPeach = judgeFromList(sourceHashCode, "BlackPeach");
 		boolean isPlum = judgeFromList(sourceHashCode, "Plum");
-		if (isRedPitch) {
+		if (isRedPeach) {
 			showAnswer("红桃", sourceHashCode);
-			isRedPitch = false;
+			isRedPeach = false;
 		} else if (isBrick) {
 			showAnswer("方块", sourceHashCode);
 			isBrick = false;
-		} else if (isBlackPitch) {
+		} else if (isBlackPeach) {
 			showAnswer("黑桃", sourceHashCode);
-			isBlackPitch = false;
+			isBlackPeach = false;
 		} else if (isPlum) {
 			showAnswer("梅花", sourceHashCode);
 			isPlum = false;
@@ -175,7 +177,6 @@ public class ImageHandler {
 	// 得到相应的BufferedReader
 	private static BufferedReader getReader(String color)
 			throws FileNotFoundException {
-		return new BufferedReader(new FileReader("D:\\workspace\\Image\\"
-				+ color + ".txt"));
+		return new BufferedReader(new FileReader(color + ".txt"));
 	}
 }
